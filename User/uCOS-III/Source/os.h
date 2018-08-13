@@ -2,7 +2,9 @@
 #define OS_H
 
 #include "cpu.h"
+#include "os_cfg.h"
 
+/*声明一个函数指针*/
 typedef void (*OS_TASK_PTR)(void *p_arg);
 
 /*任务控制块，数据类型声明*/
@@ -12,6 +14,23 @@ struct os_tcb{
 };
 /*任务控制块重定义*/
 typedef struct os_tcb			OS_TCB;
+
+/*OS_EXT宏定义*/
+#ifdef	OS_GLOBALS
+#define OS_EXT
+#else
+#define OS_EXT	extern
+#endif
+
+/*OS_DIR_LIST数据类型声明*/
+struct os_rdy_list{
+	OS_TCB	*HeadPtr;
+	OS_TCB	*TailPtr;
+};
+typedef struct os_rdy_list		OS_RDY_LIST;
+
+/*OSRDYList定义*/
+OS_EXT		OS_RDY_LIST		OSRDYList[OS_CFG_PRIO_MAX];
 
 /*错误码定义*/
 typedef  enum  os_err {
