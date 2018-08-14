@@ -4,6 +4,14 @@
 #include "cpu.h"
 #include "os_cfg.h"
 
+/*OS_EXT宏定义*/
+/*实现在头文件中定义变量*/
+#ifdef	OS_GLOBALS
+#define OS_EXT
+#else
+#define OS_EXT	extern
+#endif
+
 /*声明一个函数指针*/
 typedef void (*OS_TASK_PTR)(void *p_arg);
 
@@ -14,13 +22,6 @@ struct os_tcb{
 };
 /*任务控制块重定义*/
 typedef struct os_tcb			OS_TCB;
-
-/*OS_EXT宏定义*/
-#ifdef	OS_GLOBALS
-#define OS_EXT
-#else
-#define OS_EXT	extern
-#endif
 
 /*OS_DIR_LIST数据类型声明*/
 struct os_rdy_list{
