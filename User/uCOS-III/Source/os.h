@@ -3,6 +3,7 @@
 
 #include "cpu.h"
 #include "os_cfg.h"
+#include "os_type.h"
 
 /*OS_EXT宏定义*/
 /*实现在头文件中定义变量*/
@@ -23,6 +24,11 @@ struct os_tcb{
 /*任务控制块重定义*/
 typedef struct os_tcb			OS_TCB;
 
+/*global var*/
+OS_EXT	OS_TCB		*OSTCBCurPtr;
+OS_EXT	OS_TCB		*OSTCBHighRdyPtr;
+
+
 /*OS_DIR_LIST数据类型声明*/
 struct os_rdy_list{
 	OS_TCB	*HeadPtr;
@@ -30,8 +36,14 @@ struct os_rdy_list{
 };
 typedef struct os_rdy_list		OS_RDY_LIST;
 
-/*OSRDYList定义*/
-OS_EXT		OS_RDY_LIST		OSRDYList[OS_CFG_PRIO_MAX];
+/*global var*/
+OS_EXT	OS_RDY_LIST		OSRdyList[OS_CFG_PRIO_MAX];
+
+OS_EXT	OS_STATE		OSRunning;
+
+/*系统状态的宏定义*/
+#define OS_STATE_OS_STOPPED		(OS_STATE)(0u)
+#define OS_STATE_OS_RUNNING		(OS_STATE)(1u)
 
 /*错误码定义*/
 typedef  enum  os_err {

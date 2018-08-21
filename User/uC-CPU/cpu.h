@@ -12,5 +12,7 @@
  typedef CPU_ADDR							CPU_STK_SIZE;
  
  typedef volatile CPU_INT32U 	CPU_REG32;
+ 
+ typedef  unsigned  char        CPU_INT08U;        /*  8-bit unsigned integer                              */
 
 #endif

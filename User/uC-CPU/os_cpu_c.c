@@ -1,6 +1,7 @@
 #include "cpu.h"
 #include "os.h"
 
+/*任务堆栈初始化*/
 CPU_STK *OSTaskStkInit (OS_TASK_PTR		p_task,
 												void 					*p_arg,
 												CPU_STK 			*p_stk_base,
