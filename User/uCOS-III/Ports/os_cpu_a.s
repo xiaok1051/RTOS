@@ -11,14 +11,14 @@ NVIC_PENDSVSET		EQU		0x10000000
  IMPORT	OSTCBCurPtr
  IMPORT	OSTCBHighRdyPtr
 
-
 ;******************************************************
 ;开始第一次上下文切换
 ;1.配置PendSV异常的优先级为最低
 ;2.在开始第一次上下文切换之前，设置psp=0
 ;3.触发PendSV异常，开始上下文切换
 ;******************************************************
-OSStartHighRdy
+	AREA	|.text|,	CODE, READONLY
+OSStartHighRdy PROC
 	LDR		R0, =NVIC_SYSPRI14		;设置PendSV异常优先级为最低
 	LDR		R1, =NVIC_PENDSV_PRI
 	STRB	R1, [R0]
@@ -34,8 +34,6 @@ OSStartHighRdy
 	
 OSStartHang
 	B		OSStartHang				;程序应该永远不会运行到这里
-
-
 
 ;******************************************************
 ;PendSV_Handler异常
@@ -62,11 +60,10 @@ PendSV_Handler
 ;加载OSTCBCurPtr指针地址到R1，这里LDR属于伪指令
 	LDR		R1, = OSTCBCurPtr
 ;加载OSTCBCurPtr指针到R1，这里LDR属于RAM指令
-	LDR		R1， [R1]
+	LDR		R1, [R1]
 ;存储R0的值到OSTCBCurPtr->OSTCBStkPtr，这个时候R0存的是任务空闲栈的栈顶
-	STR		R0， [R1]
+	STR		R0, [R1]
 	
-
 ;-------------------------切换上文-------------------------
 ;实现OSTCBCurPtr = OSTCBHighRdyPtr
 ;把下一个要运行的任务的堆栈内容加载到CPU寄存器中
@@ -74,9 +71,9 @@ PendSV_Handler
 OS_CPU_PendSVHandler_nosave
 
 ;加载OSTCBCurPtr指针的地址到R0，这里LDR属于伪指令
-	LDR		R0, = OSTCBCurPtr
+	LDR		R0, =OSTCBCurPtr
 ;加载OSTCBHighRdyPtr指针的地址到R1，这里LDR属于伪指令
-	LDR		R1, = OSTCBHighRdyPtr
+	LDR		R1, =OSTCBHighRdyPtr
 ;加载OSTCBHighRdyPtr指针到R2，这里LDR属于ARM指令
 	LDR		R2, [R1]
 ;存储OSTCBHighRdyPtr到OSTCBCurPtr
