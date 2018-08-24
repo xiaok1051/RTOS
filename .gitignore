@@ -3,3 +3,6 @@ Project
 *.d
 *.o
 *.a
+
+cscope.out
+tags
