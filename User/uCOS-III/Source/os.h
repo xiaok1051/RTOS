@@ -13,7 +13,7 @@
 #define OS_EXT	extern
 #endif
 
-#define unsigned int uint32_t
+typedef unsigned int uint32_t;
 
 /*声明一个函数指针*/
 typedef void (*OS_TASK_PTR)(void *p_arg);
