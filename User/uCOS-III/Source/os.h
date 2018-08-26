@@ -20,7 +20,7 @@ typedef void (*OS_TASK_PTR)(void *p_arg);
 
 /*任务控制块，数据类型声明*/
 struct os_tcb{
-	CPU_STK				*StkPtr;
+	CPU_STK			*StkPtr;
 	CPU_STK_SIZE	StkSize;
 };
 /*任务控制块重定义*/
