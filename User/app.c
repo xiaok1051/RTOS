@@ -48,14 +48,14 @@ int main(void)
 	OSInit(&err);
 
 	/*创建任务*/
-	OSTaskCreate( 	(OS_TCB *) 			&Tadk1TCB,
+	OSTaskCreate( 	(OS_TCB *) 			&Task1TCB,
 					(OS_TASK_PTR *) 	Task1,
 					(void *) 			o,
 					(CPU_STK *) 		&Task1Stk(0),
 					(CPU_STK_SIZE) 		TASK1_STK_SIZE,	
 					(OS_ERR *) 			&err);
 
-	OSTaskCreate( 	(OS_TCB *) 			&Tadk2TCB,
+	OSTaskCreate( 	(OS_TCB *) 			&Task2TCB,
 					(OS_TASK_PTR *) 	Task2,
 					(void *) 			o,
 					(CPU_STK *) 		&Task2Stk(0),
