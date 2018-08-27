@@ -30,7 +30,7 @@ void OSInit(OS_ERR *p_err)
 }
 
 /*系统启动函数*/
-void OSstart (OS_ERR *p_err)
+void OSStart (OS_ERR *p_err)
 {
 	if(OSRunning == OS_STATE_OS_STOPPED)
 	{
