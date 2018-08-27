@@ -50,24 +50,25 @@ int main(void)
 	/*创建任务*/
 	OSTaskCreate( 	(OS_TCB *) 			&Task1TCB,
 					(OS_TASK_PTR *) 	Task1,
-					(void *) 			o,
+					(void *) 			0,
 					(CPU_STK *) 		&Task1Stk(0),
 					(CPU_STK_SIZE) 		TASK1_STK_SIZE,	
 					(OS_ERR *) 			&err);
 
 	OSTaskCreate( 	(OS_TCB *) 			&Task2TCB,
 					(OS_TASK_PTR *) 	Task2,
-					(void *) 			o,
+					(void *) 			0,
 					(CPU_STK *) 		&Task2Stk(0),
 					(CPU_STK_SIZE) 		TASK2_STK_SIZE,	
 					(OS_ERR *) 			&err);
 
 	/*将任务加入就绪列表*/
+	OSRdyList[0].HeadPtr = &Task1TCB;
+	OSRdyList[1].HeadPtr = &Task2TCB;
 
 	/*启动OS，将不再返回*/
+	OSStart(&err);
 
-
-	return 0;
 }
 
 /**************************************************************
