@@ -73,4 +73,58 @@ int main(void)
 /**************************************************************
  * 函数实现
 **************************************************************/
+/*延时函数*/
+void delay(uint32_t count)
+{
+	for( ; count!=0; count--);
+}
+
+/*任务1*/
+void Task1(void *p_arg)
+{
+	for ( ; ; )
+	{
+		flag1 = 1;
+		delay(100);
+		flag1 = 0;
+		delay(100);
+
+		/*任务切换，这里是手动切换*/
+		OSSched();
+	}
+}
+
+/*任务2*/
+void Task2(void *p_arg)
+{
+	for ( ; ; )
+	{
+		flag2 = 1;
+		delay(100);
+		flag2 = 0;
+		delay(100);
+
+		/*任务切换，这里是手动切换*/
+		OSSched();
+	}
+}
+
+/*任务切换，实际就是触发PendSV异常，然后在PendSV异常中进行上下文切换*/
+void OSSched(void)
+{
+	if(OSTCBCurPtr == OSRdyList[0].HeadPtr)
+	{
+		OSTCBHighRdyPtr = OSRdyList[1].HeadPtr;
+	}
+	else
+	{
+		OSTCBHighRdyPtr = OSRdyList[0].HeadPtr;
+	}
+	
+	OS_TASK_SW();
+}
+
+
+
+
 
