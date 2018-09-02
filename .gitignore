@@ -1,5 +1,3 @@
-Project
-
 *.d
 *.o
 *.a
@@ -8,3 +6,9 @@ cscope.out
 tags
 *.swp
 *.swo
+
+KP-uCOS-III.uvprojx
+KP-uCOS-III.uvoptx
+KP-uCOS-III.uvguix.wangkun
+Project/RVMDK(uv5)/Listings
+Project/RVMDK(uv5)/Objects
