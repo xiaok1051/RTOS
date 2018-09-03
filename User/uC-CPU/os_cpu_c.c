@@ -1,18 +1,19 @@
 #include "cpu.h"
 #include "os.h"
+#include "ARMCM3.h"
 
 /*任务堆栈初始化*/
-CPU_STK *OSTaskStkInit ( 						OS_TASK_PTR		p_task,
-												void 					*p_arg,
-												CPU_STK 			*p_stk_base,
-												CPU_STK_SIZE	stk_size)
+CPU_STK *OSTaskStkInit ( 				OS_TASK_PTR		p_task,
+										void 			*p_arg,
+										CPU_STK 		*p_stk_base,
+										CPU_STK_SIZE	stk_size)
 {
 	CPU_STK *p_stk;
 	p_stk = &p_stk_base[stk_size];
 	
 	/*异常发生时自动保存的寄存器*/
-	*--p_stk = (CPU_STK)0x01000000u;		/*xPSR的bit24必须置1																			*/
-	*--p_stk = (CPU_STK)p_task;					/*R15(PC)任务的入口地址																		*/
+	*--p_stk = (CPU_STK)0x01000000u;	/*xPSR的bit24必须置1									  */
+	*--p_stk = (CPU_STK)p_task;			/*R15(PC)任务的入口地址									  */
 	*--p_stk = (CPU_STK)0x14141414u;    /* R14 (LR)                                               */
 	*--p_stk = (CPU_STK)0x12121212u;    /* R12                                                    */
 	*--p_stk = (CPU_STK)0x03030303u;    /* R3                                                     */
@@ -32,3 +33,18 @@ CPU_STK *OSTaskStkInit ( 						OS_TASK_PTR		p_task,
 	
 	return p_stk;
 }
+
+/*SysTick初始化函数*/
+#if 0 	/*此函数不使用ucos-III官方的*/
+void OS_CPU_SysTickInit(CPU_INT32U cnts)
+{
+
+}
+#else
+void OS_CPU_SysTickInit(CPU_INT32U cnts)
+{
+	
+}
+#endif
+
+
