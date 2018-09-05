@@ -40,11 +40,32 @@ void OS_CPU_SysTickInit(CPU_INT32U cnts)
 {
 
 }
-#else
-void OS_CPU_SysTickInit(CPU_INT32U cnts)
+#else  /*使用头文件ARMCM3.h里面现有的寄存器定义和函数来实现*/
+void OS_CPU_SysTickInit(CPU_INT32U ms)
 {
+	/*设置重装载寄存器的值*/	
+	SysTick->LOAD = ms * SystemCoreClock / 1000 -1;
 	
+	/*配置中断优先级为最低*/
+	NVIC_SetPriority (SysTick_IRQn, (1<<__NVIC_PRIO_BITS) - 1);
+
+	/*复位当前计数器的值*/
+	SysTick->VAL = 0;
+
+	/*选择时钟源、使能中断、使能计数器*/
+	SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk |
+					SysTick_CTRL_TICKINT_Msk   |
+					SysTick_CTRL_ENABLE_Msk    ;
 }
 #endif
+
+extern void OSTimeTick(void);
+/*SysTick定时器的中断服务函数，定时器的数值递减到0时触发
+ * 在此完成任务的切换,SysTick来提供系统的心跳*/
+void SysTick_Handler(void)
+{
+	/*此函数中仅仅完成了任务的切换，函数原型在os_time.c中*/
+	OSTimeTick();
+}
 
 

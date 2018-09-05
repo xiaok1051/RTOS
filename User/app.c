@@ -47,6 +47,12 @@ int main(void)
 {
 	OS_ERR err;
 
+	/*关闭中断*/
+	CPU_IntDis();
+
+	/*配置SYSTick 10ms 中断一次*/
+	OS_CPU_SysTickInit (10);
+
 	/*初始化相关全局变量*/
 	OSInit(&err);
 
@@ -93,7 +99,7 @@ void Task1(void *p_arg)
 		delay(100);
 
 		/*任务切换，这里是手动切换*/
-		OSSched();
+		//OSSched();
 	}
 }
 
@@ -108,7 +114,7 @@ void Task2(void *p_arg)
 		delay(100);
 
 		/*任务切换，这里是手动切换*/
-		OSSched();
+		//OSSched();
 	}
 }
 
