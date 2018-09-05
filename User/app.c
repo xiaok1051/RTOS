@@ -39,6 +39,7 @@ void Task2(void *p_arg);
 /*延时函数声明，函数原型在后边*/
 void delay(uint32_t count);
 void OSSched(void);
+extern void OS_CPU_SysTickInit(CPU_INT32U ms);
 
 /**************************************************************
  * main函数
@@ -47,7 +48,7 @@ int main(void)
 {
 	OS_ERR err;
 
-	/*关闭中断*/
+	/*关闭中断，汇编实现，在os_cpu_a.s中*/
 	CPU_IntDis();
 
 	/*配置SYSTick 10ms 中断一次*/

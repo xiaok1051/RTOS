@@ -35,6 +35,8 @@ OSStartHighRdy PROC
 OSStartHang
 	B		OSStartHang				;程序应该永远不会运行到这里
 
+
+
 ;******************************************************
 ;PendSV_Handler异常
 ;******************************************************
@@ -100,5 +102,14 @@ OS_CPU_PendSVHandler_nosave
 ;在STM32中，堆栈是由高地址向低地址生长的
 	BX		LR
 
+
+;关中断函数
+CPU_IntDis
+	CPSID	I
+	BX		LR
+
+
  EXPORT	OSStartHighRdy
  EXPORT	PendSV_Handler
+ EXPORT	CPU_IntDis
+	 
