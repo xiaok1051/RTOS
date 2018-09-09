@@ -95,11 +95,13 @@ void Task1(void *p_arg)
 	for ( ; ; )
 	{
 		flag1 = 1;
-		delay(100);
+		//delay(100);
+		OSTimeDly(2);
 		flag1 = 0;
-		delay(100);
+		//delay(100);
+		OSTimeDly(2);
 
-		/*任务切换，这里是手动切换*/
+		/*任务切换，这里是手动切换，加入SysTick后这里便可以不使用了*/
 		//OSSched();
 	}
 }
@@ -110,11 +112,13 @@ void Task2(void *p_arg)
 	for ( ; ; )
 	{
 		flag2 = 1;
-		delay(100);
+		//delay(100);
+		OSTimeDly(2);
 		flag2 = 0;
-		delay(100);
+		//delay(100);
+		OSTimeDly(2);
 
-		/*任务切换，这里是手动切换*/
+		/*任务切换，这里是手动切换，加入SysTick后这里便可以不使用了*/
 		//OSSched();
 	}
 }
@@ -122,6 +126,7 @@ void Task2(void *p_arg)
 /*任务切换，实际就是触发PendSV异常，然后在PendSV异常中进行上下文切换*/
 void OSSched(void)
 {
+#if 0
 	if(OSTCBCurPtr == OSRdyList[0].HeadPtr)
 	{
 		OSTCBHighRdyPtr = OSRdyList[1].HeadPtr;
@@ -130,7 +135,64 @@ void OSSched(void)
 	{
 		OSTCBHighRdyPtr = OSRdyList[0].HeadPtr;
 	}
+#endif
+	/*如果当前任务是空闲任务，那么就去尝试执行任务1或者任务2，
+	 * 看看他们的延时时间是否结束，如果任务的延时时间均没有到期，
+	 * 那就返回继续执行空闲任务*/
+	if(OSTCBCurPtr == &OSIdleTaskTCB)
+	{
+		if(OSRdyList[0].HeadPtr->TaskDelayTicks == 0)
+		{
+			OSTCBHighRdyPtr = OSRdyList[0].HeadPtr;	
+		}
+		else if(OSRdyList[1].HeadPtr->TaskDelayTicks == 0)
+		{
+			OSTCBHighRdyPtr = OSRdyList[1].HeadPtr;	
+		}
+		else /*任务延时均没有到期则返回，继续执行空闲任务*/
+		{
+			return;
+		}
+	}
+	/*如果是task1或者task2的话，检查下另外一个任务，
+	 * 如果另外的任务不再延时中，就切换到该任务，
+	 * 否则，判断下当前任务是否应该进入延时状态，
+	 * 如果是的话，就切换到空闲任务。否则就不进行任何切换*/
+	else
+	{
+		if(OSTCBCurPtr == OSRdyList[0].HeadPtr)
+		{
+			if(OSRdyList[1].HeadPtr->TaskDelayTicks == 0)
+			{
+				OSTCBHighRdyPtr = OSRdyList[1].HeadPtr;	
+			}
+			else if(OSTCBCurPtr->TaskDelayTicks != 0)
+			{
+				OSTCBHighRdyPtr = &OSIdleTaskTCB;	
+			}
+			else /*返回，不进行任务切换，因为两个任务都处于延时中*/
+			{
+				return;	
+			}
+		}
+		else if(OSTCBCurPtr == OSRdyList[1].HeadPtr)
+		{
+			if(OSRdyList[0].HeadPtr->TaskDelayTicks == 0)
+			{
+				OSTCBHighRdyPtr = OSRdyList[0].HeadPtr;	
+			}
+			else if(OSTCBCurPtr->TaskDelayTicks != 0)
+			{
+				OSTCBHighRdyPtr = &OSIdleTaskTCB;	
+			}
+			else /*返回，不进行任务切换，因为两个任务都处于延时中*/
+			{
+				return;	
+			}
+		}
+	}
 	
+	/*任务切换，触发PendSV中断*/
 	OS_TASK_SW();
 }
 

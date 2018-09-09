@@ -22,6 +22,9 @@ typedef void (*OS_TASK_PTR)(void *p_arg);
 struct os_tcb{
 	CPU_STK			*StkPtr;
 	CPU_STK_SIZE	StkSize;
+
+	/*任务延时周期个数，单位就是SysTick的中断周期*/
+	OS_TICK 		TaskDelayTicks;
 };
 /*任务控制块重定义*/
 typedef struct os_tcb			OS_TCB;
@@ -30,6 +33,11 @@ typedef struct os_tcb			OS_TCB;
 OS_EXT	OS_TCB		*OSTCBCurPtr;
 OS_EXT	OS_TCB		*OSTCBHighRdyPtr;
 
+/*空闲任务堆栈TCB*/
+OS_EXT 	OS_TCB OSIdleTaskTCB;
+
+/*空闲任务计数变量*/
+OS_EXT 	OS_IDLE_CTR OSIdleTaskCtr;
 
 /*OS_DIR_LIST数据类型声明*/
 struct os_rdy_list{
@@ -46,6 +54,12 @@ OS_EXT	OS_STATE		OSRunning;
 /*系统状态的宏定义*/
 #define OS_STATE_OS_STOPPED		(OS_STATE)(0u)
 #define OS_STATE_OS_RUNNING		(OS_STATE)(1u)
+
+/*空闲任务堆栈的起始地址*/
+extern CPU_STK 		*const OSCfg_IdleTaskStkBasePtr;
+
+/*空闲任务堆栈大小*/
+extern CPU_STK_SIZE const OSCfg_IdleTaskStkSize;
 
 /*错误码定义*/
 typedef  enum  os_err {
@@ -255,19 +269,21 @@ typedef  enum  os_err {
     OS_ERR_Z                         = 35000u
 } OS_ERR;
 
-/*functions*/
-CPU_STK *OSTaskStkInit (OS_TASK_PTR		p_task,
-												void 					*p_arg,
-												CPU_STK 			*p_stk_base,
-												CPU_STK_SIZE	stk_size);
+/*************************************************************************************/
+/*function*/
+/*************************************************************************************/
+CPU_STK *OSTaskStkInit ( 	OS_TASK_PTR		p_task,
+							void 			*p_arg,
+							CPU_STK 		*p_stk_base,
+							CPU_STK_SIZE	stk_size);
 
 /*创建任务函数声明*/
-void OSTaskCreate( 					OS_TCB			*p_tcb,
-									OS_TASK_PTR		p_task,
-									void			*p_arg,
-									CPU_STK			*p_stk_base,
-									CPU_STK_SIZE	stk_size,
-									OS_ERR			*p_err);
+void OSTaskCreate( 			OS_TCB			*p_tcb,
+							OS_TASK_PTR		p_task,
+							void			*p_arg,
+							CPU_STK			*p_stk_base,
+							CPU_STK_SIZE	stk_size,
+							OS_ERR			*p_err);
 									
 void OSInit(OS_ERR *p_err);
 									

@@ -1,6 +1,19 @@
 #include "os.h"
 #include "os_cpu.h"
 
+/*空闲任务函数*/
+void OS_IdleTask (void *p_arg)
+{
+	p_arg = p_arg;
+
+	/*空闲任务什么都不做，只对全局变量OSIdleTaskCtr ++ 操作*/
+	for ( ; ; )
+	{
+		OSIdleTaskCtr ++;
+	}
+}
+
+/*初始化就绪列表*/
 void OS_RdyListInit(void)
 {
 	OS_PRIO i;
@@ -14,6 +27,20 @@ void OS_RdyListInit(void)
 	}
 }
 
+/*空闲任务初始化*/
+void OS_IdleTaskInit(OS_ERR *p_err)
+{
+	/*初始化空闲任务计数器*/
+	OSIdleTaskCtr = (OS_Idle_CTR)0;
+
+	/*创建空闲任务*/
+	OSTaskCreate( 	(OS_TCB 		*)&OSIdleTaskTCB,
+					(OS_TASK_PTR 	 )OS_IdleTask,
+					(void 			*)0,
+					(CPU_STK 		*)OSCfg_IdleTaskStkBasePtr,
+					(CPU_STK_SIZE    )OSCfg_IdleTaskStkSize,
+					(OS_ERR 		*)p_err );
+}
 
 /*系统初始化函数，初始化OS中用到的全局变量*/
 void OSInit(OS_ERR *p_err)
@@ -21,12 +48,20 @@ void OSInit(OS_ERR *p_err)
 	/*指示系统的运行状态*/
 	OSRunning = OS_STATE_OS_STOPPED;
 	
+	/*初始化两个全局TCB，这两个TCB用于任务切换*/
 	OSTCBCurPtr = (OS_TCB *)0;
 	OSTCBHighRdyPtr = (OS_TCB *)0;
 	
+	/*初始化就绪列表*/
 	OS_RdyListInit();
-	
-	*p_err = OS_ERR_NONE;
+
+	/*初始化空闲任务*/
+	OS_IdleTaskInit(p_err);
+
+	if(*p_err = OS_ERR_NONE;)
+	{
+		return;	
+	}
 }
 
 /*系统启动函数*/
