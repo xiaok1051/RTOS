@@ -9,4 +9,6 @@ typedef   CPU_INT08U      OS_PRIO;                     /* Priority of a task,   
 /*空闲任务计数变量定义*/
 typedef CPU_INT32U OD_IDLE_CTR;
 
+typedef CPU_INT32U OS_TICK;
+
 #endif
