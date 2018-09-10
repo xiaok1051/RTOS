@@ -1,5 +1,6 @@
 #include "cpu.h"
 #include "os.h"
+#include "os_type.h"
 #include "ARMCM3.h"
 
 /*任务堆栈初始化*/

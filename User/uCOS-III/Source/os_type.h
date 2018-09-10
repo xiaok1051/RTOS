@@ -7,8 +7,9 @@ typedef   CPU_INT08U      OS_STATE;                    /* State variable        
 typedef   CPU_INT08U      OS_PRIO;                     /* Priority of a task,                               <8>/16/32 */
 
 /*空闲任务计数变量定义*/
-typedef CPU_INT32U OD_IDLE_CTR;
+typedef CPU_INT32U OS_IDLE_CTR;
 
+/*周期个数计数*/
 typedef CPU_INT32U OS_TICK;
 
 #endif

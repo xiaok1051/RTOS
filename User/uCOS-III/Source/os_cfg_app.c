@@ -1,3 +1,7 @@
+#include "cpu.h"
+#include "os_cfg_app.h"
+
+
 /*定义空闲任务堆栈*/
 
 /*数据域*/

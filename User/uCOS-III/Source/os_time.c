@@ -1,4 +1,5 @@
-
+#include "os_type.h"
+#include "os.h"
 
 /*暂时先将此函数从外部包含进来吧*/
 extern void OSSched(void);

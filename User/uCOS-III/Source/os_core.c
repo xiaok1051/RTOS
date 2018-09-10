@@ -1,5 +1,6 @@
 #include "os.h"
 #include "os_cpu.h"
+#include "os_type.h"
 
 /*空闲任务函数*/
 void OS_IdleTask (void *p_arg)
@@ -31,7 +32,7 @@ void OS_RdyListInit(void)
 void OS_IdleTaskInit(OS_ERR *p_err)
 {
 	/*初始化空闲任务计数器*/
-	OSIdleTaskCtr = (OS_Idle_CTR)0;
+	OSIdleTaskCtr = (OS_IDLE_CTR)0;
 
 	/*创建空闲任务*/
 	OSTaskCreate( 	(OS_TCB 		*)&OSIdleTaskTCB,
@@ -58,7 +59,7 @@ void OSInit(OS_ERR *p_err)
 	/*初始化空闲任务*/
 	OS_IdleTaskInit(p_err);
 
-	if(*p_err = OS_ERR_NONE;)
+	if(*p_err = OS_ERR_NONE)
 	{
 		return;	
 	}
