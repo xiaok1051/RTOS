@@ -65,6 +65,8 @@ extern void OSTimeTick(void);
  * 在此完成任务的切换,SysTick来提供系统的心跳*/
 void SysTick_Handler(void)
 {
+	OSRdyList[0].HeadPtr->TaskDelayTicks--;
+	OSRdyList[1].HeadPtr->TaskDelayTicks--;
 	/*此函数中仅仅完成了任务的切换，函数原型在os_time.c中*/
 	OSTimeTick();
 }

@@ -136,6 +136,7 @@ void OSSched(void)
 		OSTCBHighRdyPtr = OSRdyList[0].HeadPtr;
 	}
 #endif
+
 	/*如果当前任务是空闲任务，那么就去尝试执行任务1或者任务2，
 	 * 看看他们的延时时间是否结束，如果任务的延时时间均没有到期，
 	 * 那就返回继续执行空闲任务*/

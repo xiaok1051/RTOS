@@ -59,7 +59,7 @@ void OSInit(OS_ERR *p_err)
 	/*初始化空闲任务*/
 	OS_IdleTaskInit(p_err);
 
-	if(*p_err = OS_ERR_NONE)
+	if(*p_err != OS_ERR_NONE)
 	{
 		return;	
 	}
