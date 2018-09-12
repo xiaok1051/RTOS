@@ -5,6 +5,15 @@
 extern void OSSched(void);
 void OSTimeTick (void)
 {
+	int i = 0;
+	for(i=0; i<;OS_CFG_PRIO_MAX;i++)
+	{
+		if(OSRdyList[i].HeadPtr->TaskDelayTicks > 0)
+		{
+			OSRdyList[i].HeadPtr->TaskDelayTicks--;
+		}
+	}
+
 	/*任务切换函数*/
 	OSSched();
 }
