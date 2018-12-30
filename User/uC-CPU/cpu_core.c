@@ -69,35 +69,40 @@ void CPU_TS_TmrInit(void)
 CPU_INT32U BSP_CPU_ClkFreq (void)
 {
 #if 0
+	RCC_ClocksTypeDef 	rcc_clocks;
 
+	RCC_GetClocksFreq(&rcc_clocks);
+	
+	return ((CPU_INT32U)rcc_clocks.HCLK_Frequency);
 #else
+	CPU_INT32U CPU_HCLK;
+
+	/*目前软件仿真我们使用25M的系统时钟*/
+	CPU_HCLK = 25000000;
+
+	return CPU_HCLK;
 
 #endif
 }
 
+/*初始化CPU_TS_TmrFreq_Hz,这个就是系统的时钟，单位为Hz*/
+#if (CPU_CFG_TS_TMR_EN == DEF_ENABLED)
+void CPU_TS_TmrFreqSet (CPU_TS_TMR_FREQ freq_hz)
+{
+	CPU_TS_TmrFreq_Hz = freq_hz;
+}
+#endif
 
+/*用于获取CYCNNT计数器的值*/
+#if (CPU_CFG_TS_TMR_EN == DEF_ENABLED)
+CPU_TS_TMR CPU_TS_TmrRd (void)
+{
+	CPU_TS_TMR ts_tmr_cnts;
+	ts_tmr_cnts = (CPU_TS_TMR)BSP_REG_DWT_CYCCNT;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	return (ts_tmr_cnts);
+}
+#endif
 
 #endif
 

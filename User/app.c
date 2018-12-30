@@ -15,6 +15,9 @@
 uint32_t flag1;
 uint32_t flag2;
 
+uint32_t TimeStart;
+uint32_t TimeEnd;
+uint32_t TimeUse;
 
 /**************************************************************
  * TCB & STARK & 任务声明
@@ -47,6 +50,9 @@ extern void OS_CPU_SysTickInit(CPU_INT32U ms);
 int main(void)
 {
 	OS_ERR err;
+
+	/*CPU初始化：1。初始化时间戳*/
+	CPU_Init();
 
 	/*关闭中断，汇编实现，在os_cpu_a.s中*/
 	CPU_IntDis();
@@ -95,10 +101,13 @@ void Task1(void *p_arg)
 	for ( ; ; )
 	{
 		flag1 = 1;
-		//delay(100);
+
+		TimeStart = OS_TS_GET();
 		OSTimeDly(2);
+		TimeEnd = OS_TS_GET();
+		TimeUse = TimeEnd - TimeStart;
+
 		flag1 = 0;
-		//delay(100);
 		OSTimeDly(2);
 
 		/*任务切换，这里是手动切换，加入SysTick后这里便可以不使用了*/
