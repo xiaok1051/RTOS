@@ -30,7 +30,7 @@ void  OS_CPU_PendSVHandler (void);
  *时间戳配置
  * ************************************************/
 /*使能时间戳，在os_cfg.h头文件中使能*/
-#define OS_CFG_TS_EN
+#define OS_CFG_TS_EN	1u
 #if OS_CFG_TS_EN == 1u
 #define OS_TS_GET() 	(CPU_TS)CPU_TS_TmrRd()
 #else

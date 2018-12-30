@@ -1,5 +1,7 @@
 /*cup_core.c*/
 
+#define CPU_CORE_MODULE
+
 /*包含头文件*/
 #include "cpu_core.h" 
 
@@ -46,8 +48,8 @@ static void CPU_TS_Init()
 #if (CPU_CFG_TS_TMR_EN == DEF_ENABLED)
 void CPU_TS_TmrInit(void)
 {
-	CPU_INT32 fclk_freq;	
-	fclk_freq = BSP_CPU_CLKFreq();
+	CPU_INT32U fclk_freq;	
+	fclk_freq = BSP_CPU_ClkFreq();
 
 	/*使能DWT外设*/
 	BSP_REG_DEM_CR |= (CPU_INT32U)BSP_BIT_DEM_CR_TRCENA;
